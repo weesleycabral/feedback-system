@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import { Component } from '@angular/core';
 
 @Component({
@@ -9,6 +10,10 @@ export class RegisterComponent {
   passwordVisible: boolean = false;
   confirmPasswordVisible: boolean = false;
 
+  constructor(
+    private location: Location
+  ) { }
+
   togglePasswordVisibility(inputId: string) {
     if (inputId === 'password') {
       this.passwordVisible = !this.passwordVisible;
@@ -19,6 +24,10 @@ export class RegisterComponent {
       const confirmPasswordInput = document.getElementById(inputId) as HTMLInputElement;
       confirmPasswordInput.type = this.confirmPasswordVisible ? 'text' : 'password';
     }
+  }
+
+  goBack() {
+    this.location.back();
   }
 
 }
