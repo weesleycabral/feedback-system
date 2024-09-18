@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 
 @Component({
@@ -6,12 +7,15 @@ import { Router } from '@angular/router';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   passwordVisible: boolean = false;
 
   constructor(
-    private router: Router
+    private router: Router,
   ) { }
+
+  ngOnInit(): void {
+  }
 
   navigateToRegister() {
     this.router.navigate(['/register']);
