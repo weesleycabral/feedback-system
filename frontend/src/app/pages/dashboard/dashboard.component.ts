@@ -19,4 +19,8 @@ export class DashboardComponent implements OnInit {
     this.router.navigate(['/login']);
   }
 
+  goToNewFeedbackPage(): void {
+    this.router.navigate(['/new-feedback']);
+  }
+
 }
