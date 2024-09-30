@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './pages/auth/login/login.component';
 import { RegisterComponent } from './pages/auth/register/register.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { NewFeedbackComponent } from './pages/feedbacks/new-feedback/new-feedback.component';
 
 const routes: Routes = [
   {
@@ -19,6 +20,11 @@ const routes: Routes = [
     path: 'dashboard',
     component: DashboardComponent,
     data: { title: 'Dashboard - Feedback System' }
+  },
+  {
+    path: 'new-feedback',
+    component: NewFeedbackComponent,
+    data: { title: 'New Feedback - Feedback System' }
   },
   {
     path: '',
