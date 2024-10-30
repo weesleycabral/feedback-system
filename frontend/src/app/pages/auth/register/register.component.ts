@@ -1,5 +1,16 @@
 import { Location } from '@angular/common';
 import { Component } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import { LoginService } from 'src/app/services/login.service';
+
+interface RegisterForm {
+  name: FormControl,
+  email: FormControl,
+  password: FormControl,
+  passwordConfirm: FormControl
+}
 
 @Component({
   selector: 'app-register',
@@ -7,27 +18,31 @@ import { Component } from '@angular/core';
   styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent {
-  passwordVisible: boolean = false;
-  confirmPasswordVisible: boolean = false;
+  registerForm: FormGroup<RegisterForm>;
 
   constructor(
-    private location: Location
-  ) { }
-
-  togglePasswordVisibility(inputId: string) {
-    if (inputId === 'password') {
-      this.passwordVisible = !this.passwordVisible;
-      const passwordInput = document.getElementById(inputId) as HTMLInputElement;
-      passwordInput.type = this.passwordVisible ? 'text' : 'password';
-    } else if (inputId === 'confirmPassword') {
-      this.confirmPasswordVisible = !this.confirmPasswordVisible;
-      const confirmPasswordInput = document.getElementById(inputId) as HTMLInputElement;
-      confirmPasswordInput.type = this.confirmPasswordVisible ? 'text' : 'password';
-    }
+    private router: Router,
+    private loginService: LoginService,
+    private toastService: ToastrService
+  ) {
+    this.registerForm = new FormGroup({
+      name: new FormControl('', [Validators.required, Validators.minLength(3)]),
+      email: new FormControl('', [Validators.required, Validators.email]),
+      password: new FormControl('', [Validators.required, Validators.minLength(6)]),
+      passwordConfirm: new FormControl('', [Validators.required, Validators.minLength(6)])
+    })
   }
 
-  goBack() {
-    this.location.back();
+  register() {
+    this.loginService.register(this.registerForm.value.name, this.registerForm.value.email, this.registerForm.value.password).subscribe({
+      next: () => this.toastService.success("Login feito com sucesso!"),
+      error: () => this.toastService.error("Erro inesperado! Tente novamente mais tarde")
+    })
+    this.goForLoginPage();
+  }
+
+  goForLoginPage() {
+    this.router.navigate(['/login']);
   }
 
 }

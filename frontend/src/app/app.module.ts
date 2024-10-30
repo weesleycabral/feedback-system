@@ -9,17 +9,26 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { TitleService } from './services/title.service';
 import { NewFeedbackComponent } from './pages/feedbacks/new-feedback/new-feedback.component';
 
+import { HttpClientModule } from '@angular/common/http';
+import { ToastrModule } from 'ngx-toastr';
+import { ReactiveFormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent,
-    RegisterComponent,
     DashboardComponent,
-    NewFeedbackComponent
+    NewFeedbackComponent,
+    RegisterComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    ReactiveFormsModule,
+    AppRoutingModule,
+    HttpClientModule,
+    ToastrModule.forRoot(),
+    BrowserAnimationsModule
   ],
   providers: [TitleService, Title],
   bootstrap: [AppComponent]
