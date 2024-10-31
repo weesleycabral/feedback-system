@@ -35,7 +35,7 @@ export class RegisterComponent {
 
   register() {
     this.loginService.register(this.registerForm.value.name, this.registerForm.value.email, this.registerForm.value.password).subscribe({
-      next: () => this.toastService.success("Login feito com sucesso!"),
+      next: () => this.toastService.success("Registro feito com sucesso!"),
       error: () => this.toastService.error("Erro inesperado! Tente novamente mais tarde")
     })
     this.goForLoginPage();

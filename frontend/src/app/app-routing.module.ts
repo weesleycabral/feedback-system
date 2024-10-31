@@ -4,6 +4,7 @@ import { LoginComponent } from './pages/auth/login/login.component';
 import { RegisterComponent } from './pages/auth/register/register.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { NewFeedbackComponent } from './pages/feedbacks/new-feedback/new-feedback.component';
+import { AuthGuard } from './services/auth-guard.service';
 
 const routes: Routes = [
   {
@@ -19,12 +20,14 @@ const routes: Routes = [
   {
     path: 'dashboard',
     component: DashboardComponent,
-    data: { title: 'Dashboard - Feedback System' }
+    data: { title: 'Dashboard - Feedback System' },
+    canActivate: [AuthGuard]
   },
   {
-    path: 'new-feedback',
+    path: 'dashboard/new-feedback',
     component: NewFeedbackComponent,
-    data: { title: 'New Feedback - Feedback System' }
+    data: { title: 'New Feedback - Feedback System' },
+    canActivate: [AuthGuard]
   },
   {
     path: '',

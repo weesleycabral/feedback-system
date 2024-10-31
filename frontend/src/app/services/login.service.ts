@@ -34,4 +34,9 @@ export class LoginService extends BaseService {
       })
     );
   }
+
+  logout(): void {
+    sessionStorage.removeItem("token");
+    sessionStorage.removeItem("email");
+  }
 }
