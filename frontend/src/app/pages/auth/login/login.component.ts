@@ -38,7 +38,7 @@ export class LoginComponent implements OnInit {
         this.toastService.success("Login feito com sucesso!"),
           this.router.navigate(['/dashboard']);
       },
-      error: () => this.toastService.error("Erro inesperado! Tente novamente mais tarde")
+      error: () => this.toastService.error("Ocorreu um erro!")
     })
   }
 
