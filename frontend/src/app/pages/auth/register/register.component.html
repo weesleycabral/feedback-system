@@ -1,5 +1,5 @@
 <div class="flex justify-center items-center min-h-screen">
-  <form [formGroup]="registerForm">
+  <form [formGroup]="registerForm" (ngSubmit)="register()">
     <div class="w-full max-w-sm space-y-3">
       <div class="relative w-full">
         <div class="absolute top-[-3rem] left-[-1.5rem] cursor-pointer" (click)="goForLoginPage()">
@@ -12,6 +12,7 @@
         </div>
 
         <input type="email" formControlName="email"
+          [ngClass]="{'border-red-500': registerForm.get('email')?.invalid && registerForm.get('email')?.touched}"
           class="peer py-3 px-4 ps-11 block w-full bg-gray-100 border-transparent rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
           placeholder="E-mail">
         <div
@@ -19,8 +20,15 @@
           <i class="ph-thin ph-envelope-simple"></i>
         </div>
       </div>
+      <div *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched"
+        class="text-red-500 text-sm mt-1">
+        <div *ngIf="registerForm.get('email')?.errors?.['required']">E-mail é obrigatório.</div>
+        <div *ngIf="registerForm.get('email')?.errors?.['email']">E-mail inválido.</div>
+      </div>
+
       <div class="relative w-full">
         <input type="text" formControlName="name"
+          [ngClass]="{'border-red-500': registerForm.get('name')?.invalid && registerForm.get('name')?.touched}"
           class="peer py-3 px-4 ps-11 block w-full bg-gray-100 border-transparent rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
           placeholder="Nome">
         <div
@@ -33,13 +41,18 @@
           </svg>
         </div>
       </div>
-
+      <div *ngIf="registerForm.get('name')?.invalid && registerForm.get('name')?.touched"
+        class="text-red-500 text-sm mt-1">
+        <div *ngIf="registerForm.get('name')?.errors?.['required']">Nome é obrigatório.</div>
+        <div *ngIf="registerForm.get('name')?.errors?.['minlength']">Nome deve ter pelo menos 3 caracteres.</div>
+      </div>
 
       <div class="relative">
         <div class="space-y-5" data-hs-toggle-password-group="">
           <div class="max-w-sm">
             <div class="relative w-full mb-4">
               <input id="hs-toggle-password-multi-toggle-np" type="password" formControlName="password"
+                [ngClass]="{'border-red-500': registerForm.get('password')?.invalid && registerForm.get('password')?.touched}"
                 class="py-3 ps-11 pe-10 block w-full bg-gray-100 border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
                 placeholder="Senha">
               <div
@@ -69,10 +82,17 @@
               </button>
             </div>
           </div>
+          <div *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched"
+            class="text-red-500 text-sm mt-1">
+            <div *ngIf="registerForm.get('password')?.errors?.['required']">Senha é obrigatória.</div>
+            <div *ngIf="registerForm.get('password')?.errors?.['minlength']">Senha deve ter pelo menos 6 caracteres.
+            </div>
+          </div>
 
           <div class="max-w-sm mb-5">
             <div class="relative w-full mb-4">
               <input id="hs-toggle-password-multi-toggle" type="password" formControlName="passwordConfirm"
+                [ngClass]="{'border-red-500': registerForm.get('passwordConfirm')?.invalid && registerForm.get('passwordConfirm')?.touched}"
                 class="py-3 ps-11 pe-10 block w-full bg-gray-100 border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
                 placeholder="Repetir senha">
               <div
@@ -102,9 +122,17 @@
               </button>
             </div>
           </div>
+          <div *ngIf="registerForm.get('passwordConfirm')?.invalid && registerForm.get('passwordConfirm')?.touched"
+            class="text-red-500 text-sm mt-1">
+            <div *ngIf="registerForm.get('passwordConfirm')?.errors?.['required']">Confirmação de senha é obrigatória.
+            </div>
+            <div *ngIf="registerForm.get('passwordConfirm')?.errors?.['minlength']">Confirmação de senha deve ter pelo
+              menos 6 caracteres.</div>
+            <div *ngIf="registerForm.errors?.['mismatch']">As senhas não coincidem.</div>
+          </div>
         </div>
       </div>
-      <button type="button" (click)="register()"
+      <button type="submit" [disabled]="registerForm.invalid"
         class="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none">
         Registrar
       </button>
