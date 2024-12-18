@@ -9,7 +9,7 @@ export class BaseService {
   constructor() { }
 
   public Basepath() {
-    return 'http://localhost:8080/auth';
+    return 'http://localhost:8080';
   }
 
   public Headers() {

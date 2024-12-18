@@ -8,4 +8,5 @@ import com.example.feedback_api.domain.user.User;
 
 public interface UserRepository extends JpaRepository<User, String> {
   Optional<User> findByEmail(String email);
+  boolean existsById(String id);
 }

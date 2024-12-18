@@ -43,7 +43,7 @@ public class AuthServiceImpl implements AuthService {
       newUser.setName(body.name());
       this.repository.save(newUser);
       String token = this.tokenService.generateToken(newUser);
-      return ResponseEntity.ok(new ResponseDTO(newUser.getEmail(), token));
+      return ResponseEntity.ok(new ResponseDTO(newUser.getId(), newUser.getEmail(), newUser.getName(), token));
     }
 
     return ResponseEntity.badRequest().build();
@@ -55,7 +55,7 @@ public class AuthServiceImpl implements AuthService {
         .orElseThrow(() -> new RuntimeException("User Not Found"));
     if (passwordEncoder.matches(body.password(), user.getPassword())) {
       String token = this.tokenService.generateToken(user);
-      return ResponseEntity.ok(new ResponseDTO(user.getName(), token));
+      return ResponseEntity.ok(new ResponseDTO(user.getId(), user.getEmail(), user.getName(), token));
     }
     return ResponseEntity.badRequest().build();
   }

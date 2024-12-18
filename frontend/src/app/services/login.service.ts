@@ -18,19 +18,23 @@ export class LoginService extends BaseService {
   }
 
   register(name: string, email: string, password: string) {
-    return this.http.post<LoginResponse>(`${this.Basepath()}/register`, { name, email, password }, { headers: this.Headers() }).pipe(
+    return this.http.post<LoginResponse>(`${this.Basepath()}/auth/register`, { name, email, password }, { headers: this.Headers() }).pipe(
       tap((value) => {
         sessionStorage.setItem("token", value.token);
+        sessionStorage.setItem("id", value.id);
         sessionStorage.setItem("email", email);
+        sessionStorage.setItem("userName", name);
       })
     );
   }
 
   login(email: string, password: string) {
-    return this.http.post<LoginResponse>(`${this.Basepath()}/login`, { email, password }, { headers: this.Headers() }).pipe(
+    return this.http.post<LoginResponse>(`${this.Basepath()}/auth/login`, { email, password }, { headers: this.Headers() }).pipe(
       tap((value) => {
         sessionStorage.setItem("token", value.token);
         sessionStorage.setItem("email", email);
+        sessionStorage.setItem("id", value.id);
+        sessionStorage.setItem("userName", value.name);
       })
     );
   }
@@ -38,5 +42,7 @@ export class LoginService extends BaseService {
   logout(): void {
     sessionStorage.removeItem("token");
     sessionStorage.removeItem("email");
+    sessionStorage.removeItem("userName");
+    sessionStorage.removeItem("id");
   }
 }
