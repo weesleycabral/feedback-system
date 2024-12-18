@@ -23,8 +23,8 @@ export class FeedbackService extends BaseService {
     return this.http.get(`${this.Basepath()}/feedback/get/${id}`, { headers: this.Headers() });
   }
 
-  deleteFeedback(feedback: Feedback) {
-    return this.http.delete(`${this.Basepath()}/feedback/delete/${feedback.id}`, { headers: this.Headers() });
+  deleteFeedback(id: string) {
+    return this.http.delete(`${this.Basepath()}/feedback/delete/${id}`, { headers: this.Headers() });
   }
 
 

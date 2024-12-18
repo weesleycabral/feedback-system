@@ -48,8 +48,10 @@ export class DashboardComponent implements OnInit {
   }
 
   deleteFeedback(id: string): void {
-    // Adicione a lógica para excluir o feedback
     console.log(`Excluir feedback com ID: ${id}`);
+    this.feedbackService.deleteFeedback(id).subscribe(() => {
+      this.feedbacks = this.feedbacks.filter(feedback => feedback.id !== id);
+    });
   }
 
   viewFeedback(id: string): void {
