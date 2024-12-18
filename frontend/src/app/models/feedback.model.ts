@@ -1,7 +1,7 @@
 export interface Feedback {
-  id: number;
+  id: string;
   name: string;
   email: string;
   feedback: string;
-  created_at: string;
+  createdAt: string;
 }

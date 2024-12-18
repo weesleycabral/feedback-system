@@ -21,7 +21,7 @@ import { AuthGuard } from './services/auth-guard.service';
     DashboardComponent,
     NewFeedbackComponent,
     RegisterComponent,
-    LoginComponent
+    LoginComponent,
   ],
   imports: [
     BrowserModule,

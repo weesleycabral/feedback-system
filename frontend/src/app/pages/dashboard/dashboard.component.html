@@ -29,7 +29,6 @@
           class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 ml-auto">Enviar Novo Feedback</button>
       </div>
     </header>
-
     <main class="flex-1 p-4 overflow-y-auto">
       <div class="bg-white shadow-md rounded p-4">
         <h2 class="text-xl font-bold mb-4">Feedbacks Recebidos</h2>
@@ -67,58 +66,18 @@
                       </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-200">
-                      <tr>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">John Brown</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">01/02/03</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
-                          <button type="button"
-                            class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 focus:outline-none focus:text-blue-800 disabled:opacity-50 disabled:pointer-events-none mr-2">Visualizar</button>
-                          <button type="button"
-                            class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-red-600 hover:text-red-800 focus:outline-none focus:text-red-800 disabled:opacity-50 disabled:pointer-events-none">Excluir</button>
+                      <tr *ngFor="let feedback of feedbacks">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">{{ feedback.name }}
                         </td>
-                      </tr>
-
-                      <tr>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">Jim Green</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">03/02/01</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">{{ feedback.createdAt|
+                          date:'dd/MM/yyyy' }}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
                           <button type="button"
-                            class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 focus:outline-none focus:text-blue-800 disabled:opacity-50 disabled:pointer-events-none mr-2">Visualizar</button>
+                            class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 focus:outline-none focus:text-blue-800 disabled:opacity-50 disabled:pointer-events-none mr-2"
+                            (click)="viewFeedback(feedback.id)">Visualizar</button>
                           <button type="button"
-                            class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-red-600 hover:text-red-800 focus:outline-none focus:text-red-800 disabled:opacity-50 disabled:pointer-events-none">Excluir</button>
-                        </td>
-                      </tr>
-
-                      <tr>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">Joe Black</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">04/05/06</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
-                          <button type="button"
-                            class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 focus:outline-none focus:text-blue-800 disabled:opacity-50 disabled:pointer-events-none mr-2">Visualizar</button>
-                          <button type="button"
-                            class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-red-600 hover:text-red-800 focus:outline-none focus:text-red-800 disabled:opacity-50 disabled:pointer-events-none">Excluir</button>
-                        </td>
-                      </tr>
-
-                      <tr>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">Edward King</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">70/08/09</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
-                          <button type="button"
-                            class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 focus:outline-none focus:text-blue-800 disabled:opacity-50 disabled:pointer-events-none mr-2">Visualizar</button>
-                          <button type="button"
-                            class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-red-600 hover:text-red-800 focus:outline-none focus:text-red-800 disabled:opacity-50 disabled:pointer-events-none">Excluir</button>
-                        </td>
-                      </tr>
-
-                      <tr>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">Jim Red</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">10/11/12</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
-                          <button type="button"
-                            class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 focus:outline-none focus:text-blue-800 disabled:opacity-50 disabled:pointer-events-none mr-2">Visualizar</button>
-                          <button type="button"
-                            class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-red-600 hover:text-red-800 focus:outline-none focus:text-red-800 disabled:opacity-50 disabled:pointer-events-none">Excluir</button>
+                            class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-red-600 hover:text-red-800 focus:outline-none focus:text-red-800 disabled:opacity-50 disabled:pointer-events-none"
+                            (click)="deleteFeedback(feedback.id)">Excluir</button>
                         </td>
                       </tr>
                     </tbody>
