@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Feedback } from 'src/app/models/feedback.model';
+import { User } from 'src/app/models/user.model';
 import { FeedbackService } from 'src/app/services/feedback.service';
 import { LoginService } from 'src/app/services/login.service';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -12,11 +14,14 @@ import { LoginService } from 'src/app/services/login.service';
 export class DashboardComponent implements OnInit {
   userName: string | null = '';
   feedbacks: Feedback[] = [];
+  users: { [key: string]: User } = {};
+  isLoading: boolean = true;
 
   constructor(
     private router: Router,
     private loginService: LoginService,
-    private feedbackService: FeedbackService
+    private feedbackService: FeedbackService,
+    private userService: UserService
   ) { }
 
   ngOnInit(): void {
@@ -43,8 +48,23 @@ export class DashboardComponent implements OnInit {
       this.feedbackService.getFeedbacksById(userId).subscribe((feedbacks: any) => {
         console.log(feedbacks);
         this.feedbacks = feedbacks as Feedback[];
+        this.loadUserDetails();
+        this.isLoading = false;
+      }, () => {
+        this.isLoading = false;
       });
     }
+  }
+
+  loadUserDetails(): void {
+    this.feedbacks.forEach(feedback => {
+      if (!this.users[feedback.senderId]) {
+        this.userService.getUserById(feedback.senderId).subscribe((user: User) => {
+          console.log(feedback.senderId);
+          this.users[feedback.senderId] = user;
+        });
+      }
+    });
   }
 
   deleteFeedback(id: string): void {

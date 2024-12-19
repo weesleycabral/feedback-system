@@ -15,7 +15,11 @@ export class UserService extends BaseService {
     super();
   }
 
-  getUsers(): Observable<User[]> {
+  getUserById(id: string): Observable<User> {
+    return this.http.get<User>(`${this.Basepath()}/users/${id}`, { headers: this.Headers() });
+  }
+
+  getAllUsers(): Observable<User[]> {
     return this.http.get<User[]>(`${this.Basepath()}/users/all`, { headers: this.Headers() });
   }
 }

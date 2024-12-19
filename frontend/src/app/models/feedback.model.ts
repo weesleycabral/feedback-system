@@ -2,6 +2,8 @@ export interface Feedback {
   id: string;
   name: string;
   email: string;
-  feedback: string;
+  message: string;
+  recipient: string;
+  senderId: string;
   createdAt: string;
 }

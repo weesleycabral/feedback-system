@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { Feedback } from 'src/app/models/feedback.model';
 import { User } from 'src/app/models/user.model';
 import { FeedbackService } from 'src/app/services/feedback.service';
@@ -18,12 +20,14 @@ export class NewFeedbackComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private feedbackService: FeedbackService,
-    private userService: UserService
+    private userService: UserService,
+    private toastService: ToastrService,
+    private router: Router
   ) {
     this.feedbackForm = this.fb.group({
       name: ['', Validators.required],
-      recipient: ['', Validators.required],
-      feedback: ['', Validators.required]
+      to: ['', Validators.required],
+      message: ['', Validators.required]
     });
   }
 
@@ -33,7 +37,7 @@ export class NewFeedbackComponent implements OnInit {
 
   getUsers() {
     this.currentUserEmail = sessionStorage.getItem('email');
-    this.userService.getUsers().subscribe((users: User[]) => {
+    this.userService.getAllUsers().subscribe((users: User[]) => {
       this.users = users.filter(user => user.email !== this.currentUserEmail);
     });
   }
@@ -45,13 +49,16 @@ export class NewFeedbackComponent implements OnInit {
     }
 
     const feedbackData: Feedback = this.feedbackForm.value;
+    console.log(feedbackData);
     this.feedbackService.newFeedback(feedbackData).subscribe({
       next: () => {
-        alert('Feedback enviado com sucesso!');
         this.feedbackForm.reset();
+        this.toastService.success("Feedback enviado com sucesso!");
+        this.router.navigate(['/dashboard']);
       },
-      error: () => {
-        alert('Ocorreu um erro ao enviar o feedback.');
+      error: (e) => {
+        this.toastService.error("Ocorreu um erro!");
+        console.log(e);
       }
     });
   }
