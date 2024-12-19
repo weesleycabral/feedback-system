@@ -60,7 +60,6 @@ export class DashboardComponent implements OnInit {
     this.feedbacks.forEach(feedback => {
       if (!this.users[feedback.senderId]) {
         this.userService.getUserById(feedback.senderId).subscribe((user: User) => {
-          console.log(feedback.senderId);
           this.users[feedback.senderId] = user;
         });
       }
