@@ -20,6 +20,7 @@ public class Feedback {
     @Column(name = "`to`")
     private String recipient;
     private String message;
+    private String senderId;
     private LocalDateTime createdAt = LocalDateTime.now();
 
 }

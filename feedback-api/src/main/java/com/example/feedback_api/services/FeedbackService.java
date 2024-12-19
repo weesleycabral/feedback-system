@@ -12,5 +12,7 @@ public interface FeedbackService {
 
     public ResponseEntity<List<FeedbackResponseDTO>> getFeedbacksByPerson(String personId);
 
-    public ResponseEntity<Void> deleteFeedback(Long id);
+    public void deleteFeedbackById(String id);
+
+    public void deleteAllFeedbacks();
 }

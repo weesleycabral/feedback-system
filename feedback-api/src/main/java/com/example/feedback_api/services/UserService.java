@@ -5,5 +5,6 @@ import com.example.feedback_api.dto.UserDTO;
 import java.util.List;
 
 public interface UserService {
-    List<UserDTO> getAllUsers();
+    public List<UserDTO> getAllUsers();
+    public UserDTO getUserById(String id);
 }

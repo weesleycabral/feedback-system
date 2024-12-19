@@ -31,21 +31,24 @@ public class SecurityConfig {
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http
         .csrf(csrf -> csrf.disable())
-        .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)).cors(Customizer.withDefaults())
+        .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        .cors(Customizer.withDefaults())
         .authorizeHttpRequests(authorize -> authorize
             .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
             .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
-                .requestMatchers("/users/all").permitAll()
-                .requestMatchers("/feedback/new").permitAll()
-                .requestMatchers("/feedback/get/**").permitAll()
-                .requestMatchers("/feedback/delete/**").permitAll()
+            .requestMatchers(HttpMethod.GET, "/users/all").permitAll()
+                .requestMatchers(HttpMethod.GET, "/users/**").permitAll()
+            .requestMatchers(HttpMethod.POST, "/feedback/new").permitAll()
+            .requestMatchers(HttpMethod.GET, "/feedback/get/**").permitAll()
+            .requestMatchers(HttpMethod.DELETE, "/feedback/delete/**").permitAll()
             .anyRequest().authenticated())
+        // .anyRequest().permitAll())
         .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
     return http.build();
   }
 
   @Bean
-CorsConfigurationSource corsConfigurationSource() {
+  CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration configuration = new CorsConfiguration();
     configuration.setAllowedOrigins(Arrays.asList("*"));
     configuration.setAllowedMethods(Arrays.asList("*"));
@@ -53,7 +56,7 @@ CorsConfigurationSource corsConfigurationSource() {
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
     source.registerCorsConfiguration("/**", configuration);
     return source;
-}
+  }
 
   @Bean
   public PasswordEncoder passwordEncoder() {

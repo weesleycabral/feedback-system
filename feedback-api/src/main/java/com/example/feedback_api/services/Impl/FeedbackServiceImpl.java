@@ -35,15 +35,20 @@ public class FeedbackServiceImpl implements FeedbackService {
                     .body(null);
         }
 
-        if (!userRepository.existsById(body.to())) {
+        if (!userRepository.existsById(body.to()) || !userRepository.existsById(body.senderId())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(null);
+        }
+
+        if (body.senderId().equals(body.to())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
 
         Feedback feedback = new Feedback();
         feedback.setName(body.name());
         feedback.setRecipient(body.to());
         feedback.setMessage(body.message());
+        feedback.setSenderId(body.senderId());
         feedback.setCreatedAt(LocalDateTime.now());
 
         feedbackRepository.save(feedback);
@@ -53,8 +58,8 @@ public class FeedbackServiceImpl implements FeedbackService {
                 feedback.getName(),
                 feedback.getRecipient(),
                 feedback.getMessage(),
-                feedback.getCreatedAt()
-        );
+                feedback.getSenderId(),
+                feedback.getCreatedAt());
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(responseDTO);
@@ -70,14 +75,20 @@ public class FeedbackServiceImpl implements FeedbackService {
                         feedback.getName(),
                         feedback.getRecipient(),
                         feedback.getMessage(),
+                        feedback.getSenderId(),
                         feedback.getCreatedAt()))
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(responseDTOs);
     }
 
-    public ResponseEntity<Void> deleteFeedback(Long id) {
+    @Override
+    public void deleteFeedbackById(String id) {
         feedbackRepository.deleteById(id);
-        return ResponseEntity.ok().build();
+    }
+
+    @Override
+    public void deleteAllFeedbacks() {
+        feedbackRepository.deleteAll();
     }
 }
