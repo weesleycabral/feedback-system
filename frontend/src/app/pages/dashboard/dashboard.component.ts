@@ -17,6 +17,8 @@ export class DashboardComponent implements OnInit {
   users: { [key: string]: User } = {};
   isLoading: boolean = true;
   selectedFeedback: Feedback | null = null;
+  feedbackToDelete: Feedback | null = null;
+  showDeleteAlert: boolean = false;
 
   constructor(
     private router: Router,
@@ -67,10 +69,25 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  deleteFeedback(id: string): void {
-    this.feedbackService.deleteFeedback(id).subscribe(() => {
-      this.feedbacks = this.feedbacks.filter(feedback => feedback.id !== id);
-    });
+  confirmDeleteFeedback(feedback: Feedback): void {
+    this.feedbackToDelete = feedback;
+    this.showDeleteAlert = true;
+  }
+
+  deleteFeedback(): void {
+    if (this.feedbackToDelete) {
+      console.log(`Excluir feedback com ID: ${this.feedbackToDelete.id}`);
+      this.feedbackService.deleteFeedback(this.feedbackToDelete.id).subscribe(() => {
+        this.feedbacks = this.feedbacks.filter(feedback => feedback.id !== this.feedbackToDelete!.id);
+        this.feedbackToDelete = null;
+        this.showDeleteAlert = false;
+      });
+    }
+  }
+
+  cancelDelete(): void {
+    this.feedbackToDelete = null;
+    this.showDeleteAlert = false;
   }
 
   viewFeedback(feedback: Feedback): void {
