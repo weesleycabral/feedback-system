@@ -25,6 +25,8 @@ export class DashboardComponent implements OnInit {
   };
   filteredFeedbacks: Feedback[] = [];
   searchTerm: string = '';
+  searchDate: string;
+  noDateResults = false;
 
   constructor(
     private router: Router,
@@ -112,6 +114,22 @@ export class DashboardComponent implements OnInit {
 
   closeDetails(): void {
     this.selectedFeedback = null;
+  }
+
+  filterFeedbacksByDate(): void {
+    if (this.searchDate) {
+      this.filteredFeedbacks = this.feedbacks.filter(feedback =>
+        new Date(feedback.createdAt).toISOString().split('T')[0] === this.searchDate
+      );
+      if (this.filteredFeedbacks.length === 0) {
+        this.noDateResults = true;
+      } else {
+        this.noDateResults = false;
+      }
+    } else {
+      this.filteredFeedbacks = this.feedbacks;
+      this.noDateResults = false;
+    }
   }
 
 }
