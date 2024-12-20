@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { Feedback } from 'src/app/models/feedback.model';
 import { User } from 'src/app/models/user.model';
 import { FeedbackService } from 'src/app/services/feedback.service';
@@ -19,12 +20,18 @@ export class DashboardComponent implements OnInit {
   selectedFeedback: Feedback | null = null;
   feedbackToDelete: Feedback | null = null;
   showDeleteAlert: boolean = false;
+  options = {
+    path: '/assets/animations/emptybox.json',
+  };
+  filteredFeedbacks: Feedback[] = [];
+  searchTerm: string = '';
 
   constructor(
     private router: Router,
     private loginService: LoginService,
     private feedbackService: FeedbackService,
-    private userService: UserService
+    private userService: UserService,
+    private toastr: ToastrService
   ) { }
 
   ngOnInit(): void {
@@ -51,6 +58,7 @@ export class DashboardComponent implements OnInit {
       this.feedbackService.getFeedbacksById(userId).subscribe((feedbacks: any) => {
         console.log(feedbacks);
         this.feedbacks = feedbacks as Feedback[];
+        this.filteredFeedbacks = this.feedbacks;
         this.loadUserDetails();
         this.isLoading = false;
       }, () => {
@@ -69,6 +77,13 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  filterFeedbacks(): void {
+    this.filteredFeedbacks = this.feedbacks.filter(feedback => {
+      const user = this.users[feedback.senderId];
+      return user && user.name.toLowerCase().includes(this.searchTerm.toLowerCase());
+    });
+  }
+
   confirmDeleteFeedback(feedback: Feedback): void {
     this.feedbackToDelete = feedback;
     this.showDeleteAlert = true;
@@ -81,6 +96,7 @@ export class DashboardComponent implements OnInit {
         this.feedbacks = this.feedbacks.filter(feedback => feedback.id !== this.feedbackToDelete!.id);
         this.feedbackToDelete = null;
         this.showDeleteAlert = false;
+        this.toastr.success('Feedback excluído com sucesso!');
       });
     }
   }

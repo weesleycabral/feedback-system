@@ -36,12 +36,12 @@
           <div class="-m-1.5 overflow-x-auto">
             <div class="p-1.5 min-w-full inline-block align-middle">
               <div class="border rounded-lg divide-y divide-gray-200">
-                <div class="py-3 px-4">
+                <div class="py-3 px-4" *ngIf="feedbacks.length > 0">
                   <div class="relative max-w-xs">
-                    <label class="sr-only">Search</label>
+                    <label class="sr-only">Pesquisar</label>
                     <input type="text" name="hs-table-with-pagination-search" id="hs-table-with-pagination-search"
                       class="py-2 px-3 ps-9 block w-full border-gray-200 shadow-sm rounded-lg text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
-                      placeholder="Search for items">
+                      placeholder="Busque por remetente" [(ngModel)]="searchTerm" (input)="filterFeedbacks()">
                     <div class="absolute inset-y-0 start-0 flex items-center pointer-events-none ps-3">
                       <svg class="size-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                         viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -59,45 +59,67 @@
                   </div>
                 </div>
                 <div *ngIf="!isLoading" class="overflow-hidden">
-                  <table class="min-w-full divide-y divide-gray-200">
-                    <thead class="bg-gray-50">
-                      <tr>
-                        <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Enviado
-                          por
-                        </th>
-                        <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Data
-                        </th>
-                        <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Hora
-                        </th>
-                        <th scope="col" class="px-6 py-3 text-end text-xs font-medium text-gray-500 uppercase">Ações
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-200">
-                      <tr *ngFor="let feedback of feedbacks">
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">
-                          <ng-container *ngIf="users[feedback.senderId]; else loading">
+                  <ng-container *ngIf="feedbacks.length > 0; else emptyState">
+                    <ng-container *ngIf="filteredFeedbacks.length > 0; else noResults">
+                      <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                          <tr>
+                            <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">
+                              Enviado
+                              por
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">
+                              Data
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">
+                              Hora
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-end text-xs font-medium text-gray-500 uppercase">Ações
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200">
+                          <tr *ngFor="let feedback of filteredFeedbacks">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">
+                              <ng-container *ngIf="users[feedback.senderId]; else loading">
+                                <span class="font-bold" [title]="users[feedback.senderId].email">{{
+                                  users[feedback.senderId].name }}</span>
+                              </ng-container>
+                              <ng-template #loading>Carregando...</ng-template>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">{{ feedback.createdAt |
+                              date:'dd/MM/yyyy' }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">{{ feedback.createdAt |
+                              date:'HH:mm' }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
+                              <button type="button" (click)="viewFeedback(feedback)"
+                                class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 focus:outline-none focus:text-blue-800 disabled:opacity-50 disabled:pointer-events-none mr-2">Visualizar</button>
+                              <button type="button"
+                                class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-red-600 hover:text-red-800 focus:outline-none focus:text-red-800 disabled:opacity-50 disabled:pointer-events-none"
+                                (click)="confirmDeleteFeedback(feedback)">Excluir</button>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </ng-container>
+                    <ng-template #noResults>
+                      <div class="p-4 text-center text-gray-500">
+                        <p>Nenhum resultado encontrado para <span class="font-semibold text-red-600">"{{ searchTerm
+                            }}"</span> .</p>
+                      </div>
+                    </ng-template>
+                  </ng-container>
 
-                            <span class="font-bold">{{ users[feedback.senderId].name }}</span>
-                          </ng-container>
-                          <ng-template #loading>Carregando...</ng-template>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">{{ feedback.createdAt |
-                          date:'dd/MM/yyyy' }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">{{ feedback.createdAt |
-                          date:'HH:mm' }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
-                          <button type="button" (click)="viewFeedback(feedback)"
-                            class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 focus:outline-none focus:text-blue-800 disabled:opacity-50 disabled:pointer-events-none mr-2">Visualizar</button>
-                          <button type="button"
-                            class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-red-600 hover:text-red-800 focus:outline-none focus:text-red-800 disabled:opacity-50 disabled:pointer-events-none"
-                            (click)="confirmDeleteFeedback(feedback)">Excluir</button>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+                  <ng-template #emptyState>
+                    <div class="p-4 text-center text-gray-500">
+                      <p>Caixa de entrada vazia.</p>
+                      <div class="flex justify-center items-center h-full">
+                        <ng-lottie [options]="options" width="300px" height="300px"></ng-lottie>
+                      </div>
+                    </div>
+                  </ng-template>
                 </div>
-                <div class="py-1 px-4">
+                <div class="py-1 px-4" *ngIf="feedbacks.length > 0">
                   <nav class="flex items-center space-x-1" aria-label="Pagination">
                     <button type="button"
                       class="p-2.5 min-w-[40px] inline-flex justify-center items-center gap-x-2 text-sm rounded-full text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none"

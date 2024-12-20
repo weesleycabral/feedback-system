@@ -11,10 +11,18 @@ import { NewFeedbackComponent } from './pages/feedbacks/new-feedback/new-feedbac
 
 import { HttpClientModule } from '@angular/common/http';
 import { ToastrModule } from 'ngx-toastr';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthGuard } from './services/auth-guard.service';
 import { FeedbackDetailsComponent } from './components/feedback-details/feedback-details.component';
+
+
+import { LottieModule } from 'ngx-lottie';
+import player from 'lottie-web';
+
+export function playerFactory() {
+  return player;
+}
 
 @NgModule({
   declarations: [
@@ -31,7 +39,9 @@ import { FeedbackDetailsComponent } from './components/feedback-details/feedback
     AppRoutingModule,
     HttpClientModule,
     ToastrModule.forRoot(),
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    LottieModule.forRoot({ player: playerFactory }),
+    FormsModule
   ],
   providers: [TitleService, Title, AuthGuard],
   bootstrap: [AppComponent]
