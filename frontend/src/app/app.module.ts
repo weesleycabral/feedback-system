@@ -14,6 +14,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthGuard } from './services/auth-guard.service';
+import { FeedbackDetailsComponent } from './components/feedback-details/feedback-details.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { AuthGuard } from './services/auth-guard.service';
     NewFeedbackComponent,
     RegisterComponent,
     LoginComponent,
+    FeedbackDetailsComponent,
   ],
   imports: [
     BrowserModule,
