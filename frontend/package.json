@@ -8,6 +8,9 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
+  "scarfSettings": {
+    "enabled": false
+  },
   "private": true,
   "dependencies": {
     "@angular/animations": "^16.1.0",
@@ -19,6 +22,8 @@
     "@angular/platform-browser-dynamic": "^16.1.0",
     "@angular/router": "^16.1.0",
     "feedback-system": "file:",
+    "lottie-web": "^5.9.6",
+    "ngx-lottie": "^10.0.0",
     "ngx-toastr": "^19.0.0",
     "preline": "^2.4.1",
     "rxjs": "~7.8.0",
