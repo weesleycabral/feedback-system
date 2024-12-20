@@ -16,6 +16,7 @@ export class DashboardComponent implements OnInit {
   feedbacks: Feedback[] = [];
   users: { [key: string]: User } = {};
   isLoading: boolean = true;
+  selectedFeedback: Feedback | null = null;
 
   constructor(
     private router: Router,
@@ -72,8 +73,12 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  viewFeedback(id: string): void {
+  viewFeedback(feedback: Feedback): void {
+    this.selectedFeedback = feedback;
+  }
 
+  closeDetails(): void {
+    this.selectedFeedback = null;
   }
 
 }
