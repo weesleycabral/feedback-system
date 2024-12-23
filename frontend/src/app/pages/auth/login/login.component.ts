@@ -17,6 +17,7 @@ interface LoginForm {
 })
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup<LoginForm>;
+  passwordVisible = false;
 
   constructor(
     private router: Router,
@@ -30,6 +31,13 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+  }
+
+  togglePasswordVisibility(): void {
+    this.passwordVisible = !this.passwordVisible;
+    const passwordField = document.getElementById('hs-toggle-password') as HTMLInputElement;
+    passwordField.type = this.passwordVisible ? 'text' : 'password';
   }
 
   login() {

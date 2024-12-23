@@ -1,5 +1,5 @@
 import { Location } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -18,9 +18,11 @@ interface RegisterForm {
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss']
 })
-export class RegisterComponent {
+export class RegisterComponent implements OnInit {
   registerForm: FormGroup<RegisterForm>;
   user: User;
+  passwordVisible = false;
+  passwordConfirmVisible = false;
 
   constructor(
     private router: Router,
@@ -34,6 +36,22 @@ export class RegisterComponent {
       password: ['', [Validators.required, Validators.minLength(6)]],
       passwordConfirm: ['', [Validators.required, Validators.minLength(6)]]
     }, { validators: this.passwordMatchValidator });
+  }
+
+  ngOnInit(): void {
+  }
+
+
+  togglePasswordVisibility(field: string): void {
+    if (field === 'password') {
+      this.passwordVisible = !this.passwordVisible;
+      const passwordField = document.getElementById('hs-toggle-password-multi-toggle-np') as HTMLInputElement;
+      passwordField.type = this.passwordVisible ? 'text' : 'password';
+    } else if (field === 'passwordConfirm') {
+      this.passwordConfirmVisible = !this.passwordConfirmVisible;
+      const passwordConfirmField = document.getElementById('hs-toggle-password-multi-toggle') as HTMLInputElement;
+      passwordConfirmField.type = this.passwordConfirmVisible ? 'text' : 'password';
+    }
   }
 
   passwordMatchValidator(form: FormGroup) {
