@@ -1,6 +1,6 @@
 package com.example.feedback_api.services.Impl;
 
-import com.example.feedback_api.domain.user.Feedback;
+import com.example.feedback_api.domain.Feedback;
 import com.example.feedback_api.dto.FeedbackRequestDTO;
 import com.example.feedback_api.dto.FeedbackResponseDTO;
 import com.example.feedback_api.respositories.FeedbackRepository;

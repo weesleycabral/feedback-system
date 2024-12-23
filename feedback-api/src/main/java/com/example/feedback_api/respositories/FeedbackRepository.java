@@ -1,7 +1,8 @@
 package com.example.feedback_api.respositories;
 
-import com.example.feedback_api.domain.user.Feedback;
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.example.feedback_api.domain.Feedback;
 
 import java.util.List;
 

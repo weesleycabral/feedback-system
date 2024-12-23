@@ -1,4 +1,4 @@
-package com.example.feedback_api.domain.user;
+package com.example.feedback_api.domain;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
