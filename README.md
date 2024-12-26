@@ -75,5 +75,4 @@ O Sistema de Feedback é uma plataforma projetada principalmente para empresas, 
 Sinta-se à vontade para fazer um fork deste repositório, criar branches de funcionalidades e enviar pull requests. Contribuições são sempre bem-vindas!
 
 ## Licença
-Este projeto está licenciado sob a Licença MIT. Consulte o arquivo `LICENSE` para mais detalhes.
-
+Este projeto está licenciado sob a Licença MIT.
